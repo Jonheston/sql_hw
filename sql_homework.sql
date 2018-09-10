@@ -63,9 +63,9 @@ GROUP BY staff.first_name, staff.last_name;
 select * from inventory;
 #6c. List each film and the number of actors who are listed for that film. Use tables film_actor and film. Use inner join.
 
-SELECT f.title, COUNT(a.actor_id) AS 'total'
-FROM film f LEFT JOIN film_actor  a ON f.film_id = a.film_id
-GROUP BY f.title;
+SELECT film.title, COUNT(film_actor.actor_id) AS 'total'
+FROM film  LEFT JOIN film_actor  ON film.film_id = film_actor.film_id
+GROUP BY film.title;
 
 
 #6d. How many copies of the film Hunchback Impossible exist in the inventory system?
@@ -114,22 +114,22 @@ select * from category;
 
 SELECT title, COUNT(film.film_id) AS 'rental_count'
 FROM  film
-JOIN inventory ON (film.film_id= inventory.film_id)
-JOIN rental ON (inventory.inventory_id=rental.inventory_id)
+LEFT JOIN inventory ON (film.film_id= inventory.film_id)
+LEFT JOIN rental ON (inventory.inventory_id=rental.inventory_id)
 GROUP BY title ORDER BY rental_count DESC;
 
 #7f. Write a query to display how much business, in dollars, each store brought in.
 SELECT staff.store_id, SUM(payment.amount) as "total_business"
 FROM payment 
-JOIN staff  ON (payment.staff_id=staff.staff_id)
+LEFT JOIN staff  ON (payment.staff_id=staff.staff_id)
 GROUP BY store_id;
 
 #7g. Write a query to display for each store its store ID, city, and country.
 select store_id, city.city, country.country
 from store
-join address on (address.address_id = store.address_id)
-join city on (address.city_id = city.city_id)
-join country on (country.country_id = city.country_id)
+LEFT JOIN address on (address.address_id = store.address_id)
+LEFT JOIN city on (address.city_id = city.city_id)
+LEFT JOIN country on (country.country_id = city.country_id)
 
 #7h. List the top five genres in gross revenue in descending order. (Hint: you may need to use the following tables: category, film_category, inventory, payment, and rental.)
 SELECT category.name, SUM(payment.amount) as "gross_revenue"
